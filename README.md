@@ -3,5 +3,5 @@
 
 
 #### Members:
-Chrystie Rae Sajorne
+Chrystie Rae Sajorne \
 Leona Mae Blancaflor
