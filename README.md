@@ -66,7 +66,9 @@ GitHub is used with frequent, meaningful commits to track individual contributio
 
 #### 4. Timeline
 Week 1: Planning how to approach the problem 
+
 Week 2: Implement all needed functionalities and testing
+
 Week 3: Finalization and ensuring everything that is needed is met, and possible early defense to have ample time for refactoring
 
 
