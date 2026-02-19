@@ -37,16 +37,15 @@ void built_in_command(Command* cmd){
 
 void extern_command(Command *cmd){
 
-
 }
+
 
 void io_redirection(Command *cmd){
 
-
 }
 
 
-void background_exe(Command *cmd){
 
+void background_exe(Command *cmd){
     
 }

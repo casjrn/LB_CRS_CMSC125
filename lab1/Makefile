@@ -18,6 +18,4 @@ $(TARGET): $(TARGET).c
 	$(CC) -o $(TARGET) $(TARGET).c
 
 clean:
-	rm -f $(OBJS) $(TARGET)
-
-.PHONY: all clean
+	rm $(TARGET)
