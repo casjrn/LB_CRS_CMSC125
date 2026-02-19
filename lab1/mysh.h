@@ -4,11 +4,12 @@
 //put in header 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+
 
 #define MAX_LINE 1024
 #define MAX_JOBS 100
@@ -22,9 +23,13 @@ typedef struct {
     bool background;
 } Command;
 
-int parse_command(char *line, Command *cmd);
-void free_command(Command *cmd);
-int execute_command(Command *cmd);
-void reap_background_jobs();
+extern Command cmd;
+
+void reap_background_processes();
+int parse_command(char *line);
+void built_in_command(Command *cmd);
+void extern_command(Command *cmd);
+void io_redirection(Command *cmd);
+void background_exe(Command *cmd);
 
 #endif
