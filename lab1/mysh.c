@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <sys/wait.h>
 #include "mysh.h"
 
 void reap_background_jobs() {
