@@ -1,16 +1,18 @@
+#include <sys/wait.h>
 #include "mysh.h"
 
-void reap_background_jobs() {
+Command cmd;
+
+void reap_background_processes() {
     while (waitpid(-1, NULL, WNOHANG) > 0);
 }
 
 int main() {
     char line[MAX_LINE];
-    Command cmd;
 
     while (1) {
-        reap_background_jobs();
-
+        reap_background_processes();
+        
         printf("mysh> ");
         fflush(stdout);
 
@@ -19,9 +21,10 @@ int main() {
 
         if (strlen(line) <= 1) continue;
 
-        if (parse_command(line, &cmd))
-            execute_command(&cmd);
-    }
+        if (parse_command(line)) {
+           built_in_command(&cmd);
+        }
 
     return 0;
+    }
 }
