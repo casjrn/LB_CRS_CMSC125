@@ -1,4 +1,3 @@
-#include <sys/wait.h>
 #include "mysh.h"
 
 Command cmd;
