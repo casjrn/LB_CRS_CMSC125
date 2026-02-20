@@ -36,7 +36,18 @@ void built_in_command(Command* cmd){
 }
 
 void extern_command(Command *cmd){
+    pid_t pid = fork();
 
+    if (pid < 0) {
+        perror("fork failed");
+    } else if (pid == 0) {                          // CHILD
+        io_redirection(cmd);            
+        execvp(cmd->command, cmd->args); 
+        perror("exec failed");
+        exit(127);
+    } else {                                        // PARENT
+        background_exe(cmd, pid);       
+    }
 }
 
 
@@ -48,4 +59,9 @@ void io_redirection(Command *cmd){
 
 void background_exe(Command *cmd){
     
+}
+
+
+void reap_background_processes() {
+    while (waitpid(-1, NULL, WNOHANG) > 0);
 }

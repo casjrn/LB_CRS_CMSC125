@@ -1,12 +1,7 @@
 #include "mysh.h"
 
-Command cmd;
-
-void reap_background_processes() {
-    while (waitpid(-1, NULL, WNOHANG) > 0);
-}
-
 int main() {
+    Command cmd;
     char line[MAX_LINE];
 
     while (1) {
