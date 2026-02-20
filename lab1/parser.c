@@ -2,37 +2,43 @@
 
 Command parse_command(char *line)
 {
+    Command cmd;
     memset(&cmd, 0, sizeof(Command));
 
-    char *token = strtok(line, " \t\n");
+    char *token = strtok(line, " \t\r\n");
     int arg_index = 0;
 
     while (token != NULL)
     {
+        // INPUT REDIRECTION
         if (strcmp(token, "<") == 0)
         {
-            token = strtok(NULL, " \t\n");
-            if (token){
+            token = strtok(NULL, " \t\r\n");
+            if (token)
+            {
                 cmd.input_file = strdup(token);
             }
         }
+        // OUTPUT REDIRECTION
         else if (strcmp(token, ">") == 0)
         {
-            token = strtok(NULL, " \t\n");
-            if (token){
+            token = strtok(NULL, " \t\r\n");
+            if (token)
+            {
                 cmd.output_file = strdup(token);
                 cmd.append = false;
             }
         }
         else if (strcmp(token, ">>") == 0)
         {
-            token = strtok(NULL, " \t\n");
+            token = strtok(NULL, " \t\r\n");
             if (token)
             {
                 cmd.output_file = strdup(token);
                 cmd.append = true;
             }
         }
+        // BACKGROUND EXECUTION
         else if (strcmp(token, "&") == 0)
         {
             cmd.background = true;
@@ -42,14 +48,16 @@ Command parse_command(char *line)
             if (cmd.command == NULL)
                 cmd.command = strdup(token);
 
-            cmd.args[arg_index++] = strdup(token);
+            if (arg_index < 255)
+            {
+                cmd.args[arg_index++] = strdup(token);
+            }
         }
 
-        token = strtok(NULL, " \t\n");
+        token = strtok(NULL, " \t\r\n");
     }
 
-    
     cmd.args[arg_index] = NULL;
-    
+
     return cmd;
 }
