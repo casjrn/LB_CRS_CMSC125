@@ -22,7 +22,9 @@ typedef struct {
     bool background;
 } Command;
 
-extern int job_id = 1;
+extern int job_id;
+extern pid_t bg_pids[MAX_JOBS] = {0};
+extern Command bg_jobs[MAX_JOBS];
 
 void reap_background_processes();
 Command parse_command(char *line);

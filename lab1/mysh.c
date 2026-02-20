@@ -19,7 +19,7 @@ int main() {
             strcmp(cmd.command, "pwd") == 0) {
             
             built_in_command(cmd);
-            free_command(cmd); // Free built-ins immediately
+            free_command(cmd); // free built-ins immediately
             } else {
                 extern_command(cmd);
             

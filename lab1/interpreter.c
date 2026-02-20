@@ -1,5 +1,9 @@
 #include "mysh.h"
 
+int job_id = 1;
+pid_t bg_pids[MAX_JOBS] = {0};
+Command bg_jobs[MAX_JOBS];
+
 void built_in_command(Command cmd)
 {
 
@@ -51,8 +55,8 @@ void extern_command(Command cmd)
     pid_t pid = fork();
 
     if (pid < 0)
-    { // PARENT
-        background_exe(cmd, pid);
+    {
+        perror("fork failed");
     }
     else if (pid == 0)
     { // CHILD
@@ -64,8 +68,8 @@ void extern_command(Command cmd)
         exit(127);
     }
     else
-    {
-        perror("fork failed");
+    { // PARENT
+        background_exe(cmd, pid);
     }
 }
 
@@ -114,16 +118,44 @@ void background_exe(Command cmd, pid_t pid)
     }
     else
     {
-        // parent does NOT wait
-        printf("[%d] Started: %s (PID: %d)\n", job_id++, cmd.command, pid);
+        bool tracked = false;
+        for (int i = 0; i < MAX_JOBS; i++)
+        {
+            if (bg_pids[i] == 0)
+            {
+                bg_pids[i] = pid;
+                bg_jobs[i] = cmd;
+                // parent does NOT wait
+                printf("[%d] Started: %s (PID: %d)\n", job_id++, cmd.command, pid);
+                tracked = true;
+                break;
+            }
+        }
+
+        if (!tracked)
+        {
+            fprintf(stderr, "mysh: maximum background jobs reached (%d)\n", MAX_JOBS);
+            free_command(cmd);
+        }
     }
 }
 
-void free_command(Command cmd){
-    if (cmd.command) {free(cmd.command);}
-    if (cmd.input_file) {free(cmd.input_file);}
-    if (cmd.output_file) {free(cmd.output_file);}
-    for (int i = 0; cmd.args[i] != NULL; i++) {
+void free_command(Command cmd)
+{
+    if (cmd.command)
+    {
+        free(cmd.command);
+    }
+    if (cmd.input_file)
+    {
+        free(cmd.input_file);
+    }
+    if (cmd.output_file)
+    {
+        free(cmd.output_file);
+    }
+    for (int i = 0; cmd.args[i] != NULL; i++)
+    {
         free(cmd.args[i]);
     }
 }
