@@ -57,8 +57,8 @@ void extern_command(Command cmd)
     else if (pid == 0)
     { // CHILD
         io_redirection(cmd);
-        
-        //execute
+
+        // execute
         execvp(cmd.command, cmd.args);
         perror("exec failed");
         exit(127);
@@ -103,20 +103,24 @@ void io_redirection(Command cmd)
 
 void background_exe(Command cmd, pid_t pid)
 {
-    if (!cmd.background) {
+    if (!cmd.background)
+    {
         int status;
-        waitpid(pid, &status, 0); // Parent pauses here
-        if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+        waitpid(pid, &status, 0); // parent pauses here
+        if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+        {
             printf("Command exited with code %d\n", WEXITSTATUS(status));
         }
-    } else {
-        // Parent does NOT wait
+    }
+    else
+    {
+        // parent does NOT wait
         printf("[%d] Started: %s (PID: %d)\n", job_id++, cmd.command, pid);
     }
-
 }
 
 void reap_background_processes()
 {
-    while (waitpid(-1, NULL, WNOHANG) > 0);
+    while (waitpid(-1, NULL, WNOHANG) > 0)
+        ;
 }

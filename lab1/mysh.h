@@ -23,6 +23,8 @@ typedef struct {
     bool background;
 } Command;
 
+static int job_id = 1;
+
 extern Command cmd;
 
 void reap_background_processes();
