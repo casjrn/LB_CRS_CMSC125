@@ -1,6 +1,6 @@
 #include "mysh.h"
 
-int parse_command(char *line)
+Command parse_command(char *line)
 {
     memset(&cmd, 0, sizeof(Command));
 
@@ -51,5 +51,5 @@ int parse_command(char *line)
     
     cmd.args[arg_index] = NULL;
     
-    return cmd.command != NULL;
+    return cmd;
 }

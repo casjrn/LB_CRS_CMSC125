@@ -10,7 +10,6 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
-
 #define MAX_LINE 1024
 #define MAX_JOBS 100
 
@@ -23,9 +22,7 @@ typedef struct {
     bool background;
 } Command;
 
-static int job_id = 1;
-
-extern Command cmd;
+extern int job_id = 1;
 
 void reap_background_processes();
 Command parse_command(char *line);
@@ -33,5 +30,6 @@ void built_in_command(Command cmd);
 void extern_command(Command cmd);
 void io_redirection(Command cmd);
 void background_exe(Command cmd, pid_t pid);
+void free_command(Command cmd);
 
 #endif

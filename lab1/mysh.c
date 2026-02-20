@@ -1,7 +1,6 @@
 #include "mysh.h"
 
 int main() {
-    Command cmd;
     char line[MAX_LINE];
 
     while (1) {
@@ -10,13 +9,25 @@ int main() {
         printf("mysh> ");
         fflush(stdout);
 
-        if (!fgets(line, sizeof(line), stdin))
-            break;
+        if (!fgets(line, sizeof(line), stdin)) break;
+       
+        Command cmd = parse_command(line);
 
-        if (strlen(line) <= 1) continue;
-
-        if (parse_command(line)) {
-           built_in_command(&cmd);
+        if (cmd.command != NULL) {
+           if (strcmp(cmd.command, "exit") == 0 || 
+            strcmp(cmd.command, "cd") == 0   || 
+            strcmp(cmd.command, "pwd") == 0) {
+            
+            built_in_command(cmd);
+            free_command(cmd); // Free built-ins immediately
+            } else {
+                extern_command(cmd);
+            
+                // if a background job, free now
+                if (!cmd.background) {
+                    free_command(cmd);
+            }
+            }
         }
 
     return 0;
