@@ -119,6 +119,15 @@ void background_exe(Command cmd, pid_t pid)
     }
 }
 
+void free_command(Command cmd){
+    if (cmd.command) {free(cmd.command);}
+    if (cmd.input_file) {free(cmd.input_file);}
+    if (cmd.output_file) {free(cmd.output_file);}
+    for (int i = 0; cmd.args[i] != NULL; i++) {
+        free(cmd.args[i]);
+    }
+}
+
 void reap_background_processes()
 {
     while (waitpid(-1, NULL, WNOHANG) > 0)
