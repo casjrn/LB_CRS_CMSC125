@@ -127,7 +127,11 @@ void background_exe(Command cmd, pid_t pid)
                 bg_pids[i] = pid;
                 bg_jobs[i] = cmd;
                 // parent does NOT wait
-                printf("[%d] Started: %s (PID: %d)\n", job_id++, cmd.command, pid);
+                printf("[%d] Started: ", job_id++);
+                for (int j = 0; cmd.args[j] != NULL; j++) {
+                    printf("%s ", cmd.args[j]);
+                }
+                printf("(PID: %d)\n", pid);
                 tracked = true;
                 break;
             }
@@ -177,7 +181,11 @@ void reap_background_processes()
         // find slot
         for (int i = 0; i < MAX_JOBS; i++) {
             if (bg_pids[i] == pid) {
-                printf("\n[%d] Done: %s (PID: %d)\n", i + 1, bg_jobs[i].command, pid);
+                printf("\n[%d] Done: ", i + 1);
+                for (int j = 0; bg_jobs[i].args[j] != NULL; j++) {
+                    printf("%s ", bg_jobs[i].args[j]);
+                }
+                printf("(PID: %d)\n", pid);
                 
                 // free memory
                 free_command(bg_jobs[i]); 
