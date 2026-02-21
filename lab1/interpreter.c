@@ -162,12 +162,11 @@ void free_command(Command cmd)
         free(cmd.output_file);
     }
 
-    if (cmd.args) {
-        for (int i = 0; cmd.args[i] != NULL; i++)
-        {
-            free(cmd.args[i]);
-        }
+    for (int i = 0; cmd.args[i] != NULL; i++)
+    {
+        free(cmd.args[i]);
     }
+
 }
 
 // DEALING WITH ZOMBIES
