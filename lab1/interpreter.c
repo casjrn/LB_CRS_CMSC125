@@ -140,7 +140,7 @@ void background_exe(Command cmd, pid_t pid)
     }
 }
 
-// DEALING WITH ZOMBIES
+// freedom from the scraps joke
 
 void free_command(Command cmd)
 {
@@ -156,11 +156,16 @@ void free_command(Command cmd)
     {
         free(cmd.output_file);
     }
-    for (int i = 0; cmd.args[i] != NULL; i++)
-    {
-        free(cmd.args[i]);
+
+    if (cmd.args) {
+        for (int i = 0; cmd.args[i] != NULL; i++)
+        {
+            free(cmd.args[i]);
+        }
     }
 }
+
+// DEALING WITH ZOMBIES
 
 void reap_background_processes()
 {
