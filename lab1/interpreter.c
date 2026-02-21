@@ -140,6 +140,8 @@ void background_exe(Command cmd, pid_t pid)
     }
 }
 
+// DEALING WITH ZOMBIES
+
 void free_command(Command cmd)
 {
     if (cmd.command)
@@ -162,6 +164,21 @@ void free_command(Command cmd)
 
 void reap_background_processes()
 {
-    while (waitpid(-1, NULL, WNOHANG) > 0)
-        ;
+     int status;
+    pid_t pid;
+    // check child
+    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+        // find slot
+        for (int i = 0; i < MAX_JOBS; i++) {
+            if (bg_pids[i] == pid) {
+                printf("\n[%d] Done: %s (PID: %d)\n", i + 1, bg_jobs[i].command, pid);
+                
+                // free memory
+                free_command(bg_jobs[i]); 
+                
+                bg_pids[i] = 0; // clear the slot 
+                break;
+            }
+        }
+    }
 }
