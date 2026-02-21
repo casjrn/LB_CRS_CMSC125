@@ -13,6 +13,7 @@ void built_in_command(Command cmd)
     // EXIT
     else if (strcmp(cmd.command, "exit") == 0)
     {
+        while (waitpid(-1, NULL, WNOHANG) > 0); 
         exit(0);
     }
 
@@ -169,7 +170,7 @@ void free_command(Command cmd)
 
 void reap_background_processes()
 {
-     int status;
+    int status;
     pid_t pid;
     // check child
     while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
